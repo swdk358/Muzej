@@ -11,6 +11,5 @@
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:clickable="true"
     android:focusable="true"
-    android:focusableInTouchMode="true"
     android:background="@drawable/selector_high"
     />

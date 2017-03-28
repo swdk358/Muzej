@@ -6,7 +6,7 @@ import org.altbeacon.beacon.Beacon;
 
 public class Showpiece {
     private String name;
-    private Beacon beacon;
+    private String beaconUUID;
     private Uri image;
     private Uri text;
     private Uri sound;
@@ -19,12 +19,12 @@ public class Showpiece {
         this.name = name;
     }
 
-    public Beacon getBeacon() {
-        return beacon;
+    public String getBeaconUUID() {
+        return beaconUUID;
     }
 
-    public void setBeacon(Beacon beacon) {
-        this.beacon = beacon;
+    public void setBeaconUUID(String uuid) {
+        this.beaconUUID = uuid;
     }
 
     public Uri getImage() {

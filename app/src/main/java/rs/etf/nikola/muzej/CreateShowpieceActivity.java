@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -13,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,14 +26,13 @@ import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
-import org.altbeacon.beacon.logging.LogManager;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import rs.etf.nikola.muzej.utility.BeaconAdapter;
 import rs.etf.nikola.muzej.utility.MyAdapter;
 import rs.etf.nikola.muzej.utility.Showpiece;
 
@@ -45,9 +42,9 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
-    static double sumRSSI = 0;
-    static double avRSSI = 0;
-    static int i = 0;
+//    static double sumRSSI = 0;
+//    static double avRSSI = 0;
+//    static int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,27 +58,8 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        MyAdapter adapter = new MyAdapter<>(list);
+        BeaconAdapter adapter = new BeaconAdapter<>(list, showpiece);
         recyclerView.setAdapter(adapter);
-
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView text = (TextView) v;
-                String s = text.getText().toString();
-                String[] parts = s.split(",");
-                String part1 = parts[0];
-                parts = part1.split(":");
-                String id = parts[1];
-                for(MyBeacon b:list) {
-                    Beacon beacon = b.getBeacon();
-                    if(beacon.getId1().equals(id)) {
-                        showpiece.setBeacon(beacon);
-                        break;
-                    }
-                }
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
@@ -92,14 +70,11 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 //        beaconManager.getBeaconParsers().add(new BeaconParser().
 //                setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.setForegroundScanPeriod(3000l);
-        beaconManager.setForegroundBetweenScanPeriod(1000l);
+        beaconManager.setForegroundScanPeriod(300l);
+        beaconManager.setForegroundBetweenScanPeriod(200l);
 
-        beaconManager.setBackgroundScanPeriod(200l);
-        beaconManager.setBackgroundBetweenScanPeriod(50l);
-
-        LogManager.setVerboseLoggingEnabled(false);
-        BeaconManager.setDebug(false);
+        beaconManager.setBackgroundScanPeriod(300l);
+        beaconManager.setBackgroundBetweenScanPeriod(200l);
 
         beaconManager.bind(this);
 
@@ -190,32 +165,36 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         }
     }
 
-    private class Item {
-        int rssi = 0;
-        long timestamp = 0;
-
-        public Item(int rssi, long timestamp){
-            this.rssi = rssi;
-            this.timestamp = timestamp;
-        }
-    }
-
-    private List<Item> items = new LinkedList<>();
+//    private class Item {
+//        int rssi = 0;
+//        long timestamp = 0;
+//
+//        public Item(int rssi, long timestamp){
+//            this.rssi = rssi;
+//            this.timestamp = timestamp;
+//        }
+//    }
 
     private class MyBeacon implements Comparable<MyBeacon> {
         private Beacon beacon;
         private boolean distance;
         private long timestamp;
+//        private List<Item> items;
 
         public MyBeacon(Beacon beacon,boolean distance) {
             this.beacon = beacon;
             this.distance = distance;
             this.timestamp = System.currentTimeMillis();
+//            this.items = new LinkedList<>();
         }
 
         public Beacon getBeacon() {
             return beacon;
         }
+
+//        public List<Item> getItems() {
+//            return items;
+//        }
 
         public boolean isTimeExceeded() {
 
@@ -255,70 +234,68 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
         for (Beacon beacon: beacons) {
             Log.i("Beacon", "Beacons: " + beacon.getId1() + ", rssi: " + beacon.getRssi()) ;
-            Identifier namespaceId = beacon.getId1();
-            Identifier instanceId = beacon.getId2();
+//            Identifier namespaceId = beacon.getId1();
+//            Identifier instanceId = beacon.getId2();
 
-            long millis = System.currentTimeMillis();
+//            long millis = System.currentTimeMillis();
+//
+//            final Item item = new Item(beacon.getRssi(), millis);
+//
+//            items.add(item);
+//
+//            int i = 0;
+//            double rssiSum = 0;
+//            while(i < items.size()) {
+//                if(items.get(i).timestamp < millis - 3000) {
+//                    items.remove(i);
+//                } else {
+//                    rssiSum += items.get(i).rssi;
+//                    i++;
+//                }
+//            }
+//
+//            double avgRssi = rssiSum/ items.size();
 
-            final Item item = new Item(beacon.getRssi(), millis);
-
-            items.add(item);
-
-            int i = 0;
-            double rssiSum = 0;
-            while(i < items.size()) {
-                if(items.get(i).timestamp < millis - 3000) {
-                    items.remove(i);
-                } else {
-                    rssiSum += items.get(i).rssi;
-                    i++;
-                }
-            }
-
-            double avgRssi = rssiSum/ items.size();
-
-            sumRSSI += beacon.getRssi();
-            i++;
-            avRSSI = sumRSSI/i;
-
-            double A = 0.000008;
-            double B = 46.449411;
-            double C = 0.9975586;
-            double distance = A * Math.pow((avRSSI*1.00/beacon.getTxPower()),B) + C;
-
-            double ratio_db = 52.0 - avRSSI;
-            double ratio_linear = Math.pow(10, ratio_db / 10);
-
-            double r = Math.sqrt(ratio_linear);
+//            sumRSSI += beacon.getRssi();
+//            i++;
+//            avRSSI = sumRSSI/i;
+//
+//            double A = 0.000008;
+//            double B = 46.449411;
+//            double C = 0.9975586;
+//            double distance = A * Math.pow((avRSSI*1.00/beacon.getTxPower()),B) + C;
+//
+//            double ratio_db = 52.0 - avRSSI;
+//            double ratio_linear = Math.pow(10, ratio_db / 10);
+//
+//            double r = Math.sqrt(ratio_linear);
+//
+//
+//            final String log = "id: "+namespaceId+
+//                    " instance: "+instanceId+
+//                    " din: "+beacon.getDistance()*2.2+"m\n" +
+//                    "rssi:  " + beacon.getRssi() + "\n" +
+//                    "tx:    " + beacon.getTxPower() + "\n" +
+//                    "1: " + beacon.getId1() + "\n" +
+//                    "2: " + beacon.getId2() + "\n" +
+//                    "aRSSI: " + avRSSI + "\n" +
+//                    "i:     " + i + "\n" +
+//                    "distance:  " + distance + "\n" +
+//                    "distance2: " + r + "\n\n" +
+//                    "average: " + avgRssi;
 
 
-            final String log = "id: "+namespaceId+
-                    " instance: "+instanceId+
-                    " din: "+beacon.getDistance()*2.2+"m\n" +
-                    "rssi:  " + beacon.getRssi() + "\n" +
-                    "tx:    " + beacon.getTxPower() + "\n" +
-                    "1: " + beacon.getId1() + "\n" +
-                    "2: " + beacon.getId2() + "\n" +
-                    "aRSSI: " + avRSSI + "\n" +
-                    "i:     " + i + "\n" +
-                    "distance:  " + distance + "\n" +
-                    "distance2: " + r + "\n\n" +
-                    "average: " + avgRssi;
-
-
-            list1.add(new MyBeacon(beacon, beacon.getTxPower() < avgRssi));
+            list1.add(new MyBeacon(beacon, beacon.getTxPower() < beacon.getRssi()));
 
             // Do we have telemetry data?
-            if (beacon.getExtraDataFields().size() > 0) {
-                long telemetryVersion = beacon.getExtraDataFields().get(0);
-                long batteryMilliVolts = beacon.getExtraDataFields().get(1);
-                long pduCount = beacon.getExtraDataFields().get(3);
-                long uptime = beacon.getExtraDataFields().get(4);
-
-            }
+//            if (beacon.getExtraDataFields().size() > 0) {
+//                long telemetryVersion = beacon.getExtraDataFields().get(0);
+//                long batteryMilliVolts = beacon.getExtraDataFields().get(1);
+//                long pduCount = beacon.getExtraDataFields().get(3);
+//                long uptime = beacon.getExtraDataFields().get(4);
+//
+//            }
         }
-
-//        Collections.sort(list1);
 
 
 
