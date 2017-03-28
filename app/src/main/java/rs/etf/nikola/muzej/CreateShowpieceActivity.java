@@ -28,8 +28,11 @@ import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.logging.LogManager;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -89,8 +92,15 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 //        beaconManager.getBeaconParsers().add(new BeaconParser().
 //                setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.setForegroundScanPeriod(50l);
-        beaconManager.setForegroundBetweenScanPeriod(50l);
+        beaconManager.setForegroundScanPeriod(3000l);
+        beaconManager.setForegroundBetweenScanPeriod(1000l);
+
+        beaconManager.setBackgroundScanPeriod(200l);
+        beaconManager.setBackgroundBetweenScanPeriod(50l);
+
+        LogManager.setVerboseLoggingEnabled(false);
+        BeaconManager.setDebug(false);
+
         beaconManager.bind(this);
 
         EditText editText = (EditText) findViewById(R.id.inputNaziv);
@@ -192,17 +202,29 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     private List<Item> items = new LinkedList<>();
 
-    private class MyBeacon {
+    private class MyBeacon implements Comparable<MyBeacon> {
         private Beacon beacon;
         private boolean distance;
+        private long timestamp;
 
         public MyBeacon(Beacon beacon,boolean distance) {
             this.beacon = beacon;
             this.distance = distance;
+            this.timestamp = System.currentTimeMillis();
         }
 
         public Beacon getBeacon() {
             return beacon;
+        }
+
+        public boolean isTimeExceeded() {
+
+            // More then 3 seconds
+            return (System.currentTimeMillis() - this.timestamp) > 10000;
+        }
+
+        public void refresh() {
+            this.timestamp = System.currentTimeMillis();
         }
 
         @Override
@@ -212,13 +234,27 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
             else
                 return "id:" + beacon.getId1() + ", distance < 1m";
         }
+
+        @Override
+        public int compareTo(@NonNull MyBeacon o) {
+            return this.getBeacon().getId1().compareTo(o.getBeacon().getId1());
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return this.compareTo((MyBeacon) obj) == 0;
+        }
     }
 
     private List<MyBeacon> list = new LinkedList<>();
 
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         final List<MyBeacon> list1 = new LinkedList<>();
+
+        Log.i("Beacon", "Beacons: " + beacons.size());
+
         for (Beacon beacon: beacons) {
+            Log.i("Beacon", "Beacons: " + beacon.getId1() + ", rssi: " + beacon.getRssi()) ;
             Identifier namespaceId = beacon.getId1();
             Identifier instanceId = beacon.getId2();
 
@@ -282,6 +318,10 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
             }
         }
 
+//        Collections.sort(list1);
+
+
+
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -294,10 +334,43 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                        textView.setTextColor(Color.MAGENTA);
 //                    }
 //                    logs.clear();
-                list.clear();
-                list.addAll(list1);
-                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.beaconList);
-                recyclerView.getAdapter().notifyDataSetChanged();
+
+                boolean hasChanges = false;
+
+
+                for (int i = 0; i < list.size(); ) {
+                    MyBeacon item = list.get(i);
+                    int index = list1.indexOf(item);
+                    if (index == -1) {
+                        if (item.isTimeExceeded()) {
+                            hasChanges = true;
+                            list.remove(i);
+                            continue;
+                        }
+                    }
+                    i++;
+                }
+
+                for (MyBeacon newItem: list1) {
+                    int index = list.indexOf(newItem);
+                    if (index == -1) {
+                        hasChanges = true;
+                        list.add(newItem);
+                    } else {
+                        MyBeacon item = list.get(index);
+                        item.refresh();
+                        if (item.distance != newItem.distance) {
+                            item.distance = newItem.distance;
+                            hasChanges = true;
+                        }
+                    }
+                }
+
+                if (hasChanges) {
+                    Collections.sort(list);
+                    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.beaconList);
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                }
             }
         });
     }
