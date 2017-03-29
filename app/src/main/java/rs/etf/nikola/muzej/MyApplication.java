@@ -25,11 +25,9 @@ public class MyApplication extends Application {
             } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
-            prefs.edit().putBoolean("firstrun", false).commit();
+            prefs.edit().putBoolean("firstrun", false).apply();
         }
     }
-
-
 
     public static Context getAppContext() {
         return MyApplication.context;

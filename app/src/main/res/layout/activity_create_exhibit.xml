@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:layout_below="@+id/naziv"
-        android:id="@+id/inputNaziv"
+        android:id="@+id/inputNazivIzlozbe"
         />
 
     <TextView
@@ -40,7 +40,7 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/text2"
-        android:layout_below="@+id/inputNaziv"
+        android:layout_below="@+id/inputNazivIzlozbe"
         />
 
     <android.support.v4.widget.NestedScrollView

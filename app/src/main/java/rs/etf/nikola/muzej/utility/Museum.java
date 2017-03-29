@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import rs.etf.nikola.muzej.MyApplication;
 
 public class Museum extends LinkedList<Exhibit> {
-    public static Museum instance = Museum.loadFromDisk();
+    public final static Museum instance = Museum.loadFromDisk();
 
     private static Museum loadFromDisk() {
         Museum museum = null;
@@ -30,7 +30,7 @@ public class Museum extends LinkedList<Exhibit> {
         return museum;
     }
 
-    public static int saveToDisk() {
+    public static void saveToDisk() {
         try {
             FileOutputStream fos = MyApplication.getAppContext().openFileOutput("museum.dat", Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -41,6 +41,5 @@ public class Museum extends LinkedList<Exhibit> {
         catch(Exception ex) {
             System.err.println(ex.getMessage());
         }
-        return 1;
     }
 }

@@ -24,8 +24,6 @@ import android.widget.TextView;
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
@@ -35,15 +33,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import rs.etf.nikola.muzej.utility.BeaconAdapter;
-import rs.etf.nikola.muzej.utility.MyAdapter;
+import rs.etf.nikola.muzej.utility.Exhibit;
 import rs.etf.nikola.muzej.utility.Showpiece;
 
 public class CreateShowpieceActivity extends AppCompatActivity implements BeaconConsumer, RangeNotifier {
-    Showpiece showpiece = new Showpiece();
+    private final Showpiece showpiece = new Showpiece();
     private BeaconManager beaconManager;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    public static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
+    private static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
 
 //    static double sumRSSI = 0;
 //    static double avRSSI = 0;
@@ -87,14 +85,14 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
         beaconManager.bind(this);
 
-        EditText editText = (EditText) findViewById(R.id.inputNaziv);
+        EditText editText = (EditText) findViewById(R.id.inputNazivEksponata);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 String name = v.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if(!name.isEmpty()) {
-                    showpiece.setName(v.getText().toString());
+                    showpiece.setName(name);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     showpiece.setHaveName(true);
                     return true;
@@ -106,15 +104,24 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                 }
             }
         });
+
+        findViewById(R.id.kreirajEksponat).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("showpiece", showpiece);
+
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == BLUETOOTH_ENABLE_REQUEST_ID) {
-            if (resultCode == RESULT_OK) {
-                // Request granted - bluetooth is turning on...
-            }
             if (resultCode == RESULT_CANCELED) {
                 finish();
             }
@@ -206,7 +213,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //    }
 
     private class MyBeacon implements Comparable<MyBeacon> {
-        private Beacon beacon;
+        private final Beacon beacon;
         private boolean distance;
         private long timestamp;
 //        private List<Item> items;
@@ -229,7 +236,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         public boolean isTimeExceeded() {
 
             // More then 3 seconds
-            return (System.currentTimeMillis() - this.timestamp) > 10000;
+            return (System.currentTimeMillis() - this.timestamp) > 3000;
         }
 
         public void refresh() {
@@ -251,11 +258,11 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
         @Override
         public boolean equals(Object obj) {
-            return this.compareTo((MyBeacon) obj) == 0;
+            return obj.getClass() == MyBeacon.class && this.compareTo((MyBeacon) obj) == 0;
         }
     }
 
-    private List<MyBeacon> list = new LinkedList<>();
+    private final List<MyBeacon> list = new LinkedList<>();
 
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         final List<MyBeacon> list1 = new LinkedList<>();
@@ -326,8 +333,6 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //
 //            }
         }
-
-
 
         this.runOnUiThread(new Runnable() {
             @Override

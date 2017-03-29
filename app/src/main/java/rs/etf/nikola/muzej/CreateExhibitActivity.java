@@ -6,19 +6,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import rs.etf.nikola.muzej.utility.Exhibit;
 import rs.etf.nikola.muzej.utility.Museum;
 import rs.etf.nikola.muzej.utility.MyAdapter;
+import rs.etf.nikola.muzej.utility.Showpiece;
 
 public class CreateExhibitActivity extends AppCompatActivity {
-    Exhibit exhibit = new Exhibit();
+    private final Exhibit exhibit = new Exhibit();
+
+    private static final int ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +42,11 @@ public class CreateExhibitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateExhibitActivity.this, CreateShowpieceActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ACTIVITY_REQUEST_CODE);
             }
         });
 
-        EditText editText = (EditText) findViewById(R.id.inputNaziv);
+        EditText editText = (EditText) findViewById(R.id.inputNazivIzlozbe);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -67,8 +70,23 @@ public class CreateExhibitActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Museum.instance.add(exhibit);
+                Museum.saveToDisk();
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ACTIVITY_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                Showpiece showpiece = data.getParcelableExtra("showpiece");
+                exhibit.add(showpiece);
+
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.showpieceList);
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+        }
     }
 }

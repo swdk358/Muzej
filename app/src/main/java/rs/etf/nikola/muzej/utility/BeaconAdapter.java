@@ -3,7 +3,6 @@ package rs.etf.nikola.muzej.utility;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,8 +12,8 @@ import java.util.List;
 import rs.etf.nikola.muzej.R;
 
 public class BeaconAdapter<T> extends RecyclerView.Adapter<BeaconAdapter.ViewHolder> {
-    private List<T> objects;
-    private Showpiece showpiece;;
+    private final List<T> objects;
+    private final Showpiece showpiece;
 
     public BeaconAdapter(List<T> objects, Showpiece showpiece) {
         this.objects = objects;
@@ -23,7 +22,7 @@ public class BeaconAdapter<T> extends RecyclerView.Adapter<BeaconAdapter.ViewHol
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mTextView;
+        public final TextView mTextView;
 
         public ViewHolder(TextView v) {
             super(v);
@@ -52,8 +51,7 @@ public class BeaconAdapter<T> extends RecyclerView.Adapter<BeaconAdapter.ViewHol
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
 
     }
 
