@@ -1,8 +1,10 @@
 package rs.etf.nikola.muzej;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
     private BeaconManager beaconManager;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    public static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
 
 //    static double sumRSSI = 0;
 //    static double avRSSI = 0;
@@ -52,6 +55,12 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         setContentView(R.layout.activity_create_showpiece);
 
         setTitle(R.string.activity_create_showpiece_title);
+
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, BLUETOOTH_ENABLE_REQUEST_ID);
+        }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.beaconList);
 
@@ -82,13 +91,34 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                showpiece.setName(v.getText().toString());
+                String name = v.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                findViewById(R.id.kreirajEksponat).setEnabled(true);
-                return true;
+                if(!name.isEmpty()) {
+                    showpiece.setName(v.getText().toString());
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    showpiece.setHaveName(true);
+                    return true;
+                }
+                else {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    showpiece.setHaveName(false);
+                    return false;
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BLUETOOTH_ENABLE_REQUEST_ID) {
+            if (resultCode == RESULT_OK) {
+                // Request granted - bluetooth is turning on...
+            }
+            if (resultCode == RESULT_CANCELED) {
+                finish();
+            }
+        }
     }
 
     @Override
@@ -348,6 +378,11 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.beaconList);
                     recyclerView.getAdapter().notifyDataSetChanged();
                 }
+
+                if(showpiece.isItemFocused() && showpiece.isHaveName())
+                    findViewById(R.id.kreirajEksponat).setEnabled(true);
+                else
+                    findViewById(R.id.kreirajEksponat).setEnabled(false);
             }
         });
     }

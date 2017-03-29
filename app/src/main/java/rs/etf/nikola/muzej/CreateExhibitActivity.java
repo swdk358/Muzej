@@ -47,11 +47,19 @@ public class CreateExhibitActivity extends AppCompatActivity {
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                exhibit.setName(v.getText().toString());
+                String name = v.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                findViewById(R.id.kreirajIzlozbu).setEnabled(true);
-                return true;
+                if(!name.isEmpty()) {
+                    exhibit.setName(name);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    findViewById(R.id.kreirajIzlozbu).setEnabled(true);
+                    return true;
+                }
+                else {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    findViewById(R.id.kreirajIzlozbu).setEnabled(false);
+                    return false;
+                }
             }
         });
 

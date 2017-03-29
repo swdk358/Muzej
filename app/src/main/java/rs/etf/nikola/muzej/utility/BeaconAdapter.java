@@ -14,8 +14,7 @@ import rs.etf.nikola.muzej.R;
 
 public class BeaconAdapter<T> extends RecyclerView.Adapter<BeaconAdapter.ViewHolder> {
     private List<T> objects;
-    private Showpiece showpiece;
-    private int focusedItem = 0;
+    private Showpiece showpiece;;
 
     public BeaconAdapter(List<T> objects, Showpiece showpiece) {
         this.objects = objects;
@@ -40,6 +39,7 @@ public class BeaconAdapter<T> extends RecyclerView.Adapter<BeaconAdapter.ViewHol
                     String s = text.getText().toString();
                     String uuid = s.split(",")[0].split(":")[1];
                     showpiece.setBeaconUUID(uuid);
+                    showpiece.setItemFocused(true);
                 }
             });
 

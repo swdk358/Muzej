@@ -10,6 +10,8 @@ public class Showpiece {
     private Uri image;
     private Uri text;
     private Uri sound;
+    private boolean itemFocused;
+    private boolean haveName;
 
     public String getName() {
         return name;
@@ -49,6 +51,22 @@ public class Showpiece {
 
     public void setSound(Uri sound) {
         this.sound = sound;
+    }
+
+    public boolean isItemFocused() {
+        return itemFocused;
+    }
+
+    public void setItemFocused(boolean itemFocused) {
+        this.itemFocused = itemFocused;
+    }
+
+    public boolean isHaveName() {
+        return haveName;
+    }
+
+    public void setHaveName(boolean haveName) {
+        this.haveName = haveName;
     }
 
     @Override
