@@ -9,34 +9,25 @@ import java.util.List;
 
 import rs.etf.nikola.muzej.R;
 
-public class MyAdapter<T> extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private final List<T> objects;
+public class MyAdapter<T> extends RecyclerView.Adapter<MyViewHolder> {
+    protected final List<T> objects;
 
     public MyAdapter(List<T> objects) {
        this.objects = objects;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public final TextView mTextView;
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }
-    }
-
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
 
-        return new ViewHolder(v);
+        return new MyViewHolder(v);
 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.mTextView.setText(objects.get(position).toString());
     }
 

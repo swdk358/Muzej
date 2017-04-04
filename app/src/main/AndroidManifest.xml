@@ -2,11 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="rs.etf.nikola.muzej">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -26,11 +29,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rs.etf.nikola.muzej.MainActivity" />
         </activity>
-        <activity
-            android:name=".CreateShowpieceActivity">
+        <activity android:name=".CreateShowpieceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rs.etf.nikola.muzej.CreateExhibitActivity" />
+        </activity>
+        <activity android:name=".DemoExhibitActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="rs.etf.nikola.muzej.MainActivity" />
         </activity>
     </application>
 

@@ -60,13 +60,45 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
             startActivityForResult(enableBtIntent, BLUETOOTH_ENABLE_REQUEST_ID);
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.beaconList);
+        EditText editText = (EditText) findViewById(R.id.inputNazivEksponata);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String name = v.getText().toString();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                if(!name.isEmpty()) {
+                    showpiece.setName(name);
+                    showpiece.setHaveName(true);
+                    return true;
+                }
+                else {
+                    showpiece.setHaveName(false);
+                    return false;
+                }
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)
+                    showpiece.setItemFocused(false);
+                else {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.beaconList);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        BeaconAdapter adapter = new BeaconAdapter<>(list, showpiece);
+        final BeaconAdapter adapter = new BeaconAdapter<>(list, showpiece, editText);
         recyclerView.setAdapter(adapter);
+        recyclerView.setPreserveFocusAfterLayout(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
@@ -84,26 +116,6 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         beaconManager.setBackgroundBetweenScanPeriod(200l);
 
         beaconManager.bind(this);
-
-        EditText editText = (EditText) findViewById(R.id.inputNazivEksponata);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                String name = v.getText().toString();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(!name.isEmpty()) {
-                    showpiece.setName(name);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    showpiece.setHaveName(true);
-                    return true;
-                }
-                else {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    showpiece.setHaveName(false);
-                    return false;
-                }
-            }
-        });
 
         findViewById(R.id.kreirajEksponat).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -384,7 +396,10 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                     recyclerView.getAdapter().notifyDataSetChanged();
                 }
 
-                if(showpiece.isItemFocused() && showpiece.isHaveName())
+                if(list.isEmpty())
+                    showpiece.setItemFocused(false);
+
+                if (showpiece.isItemFocused() && showpiece.isHaveName())
                     findViewById(R.id.kreirajEksponat).setEnabled(true);
                 else
                     findViewById(R.id.kreirajEksponat).setEnabled(false);

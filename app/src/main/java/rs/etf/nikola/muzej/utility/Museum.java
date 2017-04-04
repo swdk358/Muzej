@@ -42,4 +42,20 @@ public class Museum extends LinkedList<Exhibit> {
             System.err.println(ex.getMessage());
         }
     }
+
+    public boolean doesNameExist(String name) {
+        for(Exhibit exhibit:instance) {
+            if(exhibit.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    public Exhibit getExhibitByName(String name) {
+        for(Exhibit exhibit:instance) {
+            if(exhibit.getName().equals(name))
+                return exhibit;
+        }
+        return null;
+    }
 }

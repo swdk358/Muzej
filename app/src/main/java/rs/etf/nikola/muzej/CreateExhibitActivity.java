@@ -52,16 +52,26 @@ public class CreateExhibitActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 String name = v.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(!name.isEmpty()) {
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                if(!name.isEmpty() && !Museum.instance.doesNameExist(name)) {
                     exhibit.setName(name);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     findViewById(R.id.kreirajIzlozbu).setEnabled(true);
                     return true;
                 }
                 else {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     findViewById(R.id.kreirajIzlozbu).setEnabled(false);
+                    v.setText(R.string.invalid_name);
                     return false;
+                }
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         });

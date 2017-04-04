@@ -2,4 +2,6 @@
     <string name="app_name">Muzej</string>
     <string name="activity_create_exhibit_title">Napravi izložbu</string>
     <string name="activity_create_showpiece_title">Napravi eksponat</string>
+    <string name="activity_demo_exhibit_title">Demo izložbe</string>
+    <string name="invalid_name">Neispravno ime izložbe</string>
 </resources>

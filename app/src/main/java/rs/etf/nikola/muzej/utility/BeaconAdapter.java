@@ -1,67 +1,52 @@
 package rs.etf.nikola.muzej.utility;
 
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
 
-import rs.etf.nikola.muzej.R;
-
-public class BeaconAdapter<T> extends RecyclerView.Adapter<BeaconAdapter.ViewHolder> {
-    private final List<T> objects;
+public class BeaconAdapter<T> extends MyAdapter<T> {
     private final Showpiece showpiece;
+    private int focusPos;
+    private EditText editText;
 
-    public BeaconAdapter(List<T> objects, Showpiece showpiece) {
-        this.objects = objects;
+    public BeaconAdapter(List<T> objects, Showpiece showpiece, EditText editText) {
+        super(objects);
         this.showpiece = showpiece;
+        this.focusPos = 0;
+        this.editText = editText;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        super.onBindViewHolder(holder, position);
 
-        public final TextView mTextView;
+        if(focusPos >= getItemCount())
+            focusPos = getItemCount() - 1;
 
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-            mTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.setFocusableInTouchMode(true);
-                    v.requestFocus();
-                    v.setFocusableInTouchMode(false);
-                    Log.i("Beacon", "Onclick");
-                    TextView text = (TextView) v;
-                    String s = text.getText().toString();
-                    String uuid = s.split(",")[0].split(":")[1];
-                    showpiece.setBeaconUUID(uuid);
-                    showpiece.setItemFocused(true);
-                }
-            });
-
+        if(focusPos == position && !editText.isFocused()) {
+            holder.mTextView.setFocusableInTouchMode(true);
+            holder.mTextView.requestFocus();
+            holder.mTextView.setFocusableInTouchMode(false);
+            showpiece.setItemFocused(true);
         }
-    }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
-
-        return new ViewHolder(v);
-
-    }
-
-    @Override
-    public void onBindViewHolder(BeaconAdapter.ViewHolder holder, int position) {
-        holder.mTextView.setText(objects.get(position).toString());
-    }
-
-    @Override
-    public int getItemCount() {
-        return objects.size();
+        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setFocusableInTouchMode(true);
+                v.requestFocus();
+                v.setFocusableInTouchMode(false);
+                Log.i("Beacon", "Onclick");
+                TextView text = (TextView) v;
+                String s = text.getText().toString();
+                String uuid = s.split(",")[0].split(":")[1];
+                showpiece.setBeaconUUID(uuid);
+                showpiece.setItemFocused(true);
+                focusPos = position;
+            }
+        });
     }
 }
