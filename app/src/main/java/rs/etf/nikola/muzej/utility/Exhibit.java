@@ -17,4 +17,13 @@ public class Exhibit extends LinkedList<Showpiece> {
     public String toString() {
         return name;
     }
+
+    public Showpiece getShowpieceByUUID(String uuid) {
+        for(Showpiece showpiece:this) {
+            if(showpiece.getBeaconUUID().equals(uuid))
+                return showpiece;
+        }
+        return null;
+    }
+
 }

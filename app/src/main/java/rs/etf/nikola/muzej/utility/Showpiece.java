@@ -1,24 +1,25 @@
 package rs.etf.nikola.muzej.utility;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 import rs.etf.nikola.muzej.R;
 
-public class Showpiece implements Parcelable {
+public class Showpiece implements Serializable, Parcelable {
     private String name;
     private String beaconUUID;
-    private Uri image;
-    private Uri text;
-    private Uri sound;
+    private String image;
+    private String text;
+    private String sound;
     private boolean itemFocused;
     private boolean haveName;
 
     public Showpiece() {
-        image = Uri.parse("android.resource://rs.etf.nikola.muzej/" + R.raw.defaultimage);
-        text = Uri.parse("android.resource://rs.etf.nikola.muzej/" + R.raw.defaulttext);
-        sound = Uri.parse("android.resource://rs.etf.nikola.muzej/" + R.raw.defaultsound);
+        image = "android.resource://rs.etf.nikola.muzej/" + R.drawable.defaultimage;
+        text = "android.resource://rs.etf.nikola.muzej/" + R.raw.defaulttext;
+        sound = "android.resource://rs.etf.nikola.muzej/" + R.raw.defaultsound;
         itemFocused = false;
         haveName = false;
     }
@@ -26,9 +27,9 @@ public class Showpiece implements Parcelable {
     protected Showpiece(Parcel in) {
         name = in.readString();
         beaconUUID = in.readString();
-        image = in.readParcelable(Uri.class.getClassLoader());
-        text = in.readParcelable(Uri.class.getClassLoader());
-        sound = in.readParcelable(Uri.class.getClassLoader());
+        image = in.readString();
+        text = in.readString();
+        sound = in.readString();
         itemFocused = in.readByte() != 0;
         haveName = in.readByte() != 0;
     }
@@ -61,27 +62,27 @@ public class Showpiece implements Parcelable {
         this.beaconUUID = uuid;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Uri image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    public Uri getText() {
+    public String getText() {
         return text;
     }
 
-    public void setText(Uri text) {
+    public void setText(String text) {
         this.text = text;
     }
 
-    public Uri getSound() {
+    public String getSound() {
         return sound;
     }
 
-    public void setSound(Uri sound) {
+    public void setSound(String sound) {
         this.sound = sound;
     }
 
@@ -115,9 +116,9 @@ public class Showpiece implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(beaconUUID);
-        dest.writeParcelable(image, flags);
-        dest.writeParcelable(text, flags);
-        dest.writeParcelable(sound, flags);
+        dest.writeString(image);
+        dest.writeString(text);
+        dest.writeString(sound);
         dest.writeByte((byte) (itemFocused ? 1 : 0));
         dest.writeByte((byte) (haveName ? 1 : 0));
     }

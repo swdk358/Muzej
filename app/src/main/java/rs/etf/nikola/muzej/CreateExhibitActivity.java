@@ -53,7 +53,7 @@ public class CreateExhibitActivity extends AppCompatActivity {
                 String name = v.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                if(!name.isEmpty() && !Museum.instance.doesNameExist(name)) {
+                if(!name.isEmpty() && !Museum.doesNameExist(name)) {
                     exhibit.setName(name);
                     findViewById(R.id.kreirajIzlozbu).setEnabled(true);
                     return true;

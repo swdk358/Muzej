@@ -32,6 +32,84 @@
         android:id="@+id/inputNazivEksponata"
         />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabela"
+        android:layout_below="@+id/inputNazivEksponata">
+
+        <TableRow
+            android:weightSum="1">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:id="@+id/uriImage"
+                android:layout_weight="0.7"
+                android:editable="false"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Izaberi sliku"
+                android:id="@+id/dodajUriImage"
+                android:layout_weight="0.3"
+                android:layout_gravity="center"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:weightSum="1">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:id="@+id/uriText"
+                android:layout_weight="0.7"
+                android:editable="false"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Izaberi tekst"
+                android:id="@+id/dodajUriText"
+                android:layout_weight="0.3"
+                android:layout_gravity="center"
+                />
+
+        </TableRow>
+
+
+        <TableRow
+            android:weightSum="1">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:id="@+id/uriSound"
+                android:layout_weight="0.7"
+                android:editable="false"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Izaberi audio"
+                android:id="@+id/dodajUriSound"
+                android:layout_weight="0.3"
+                android:layout_gravity="center"
+                />
+
+        </TableRow>
+
+    </TableLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +120,7 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/text2"
-        android:layout_below="@+id/inputNazivEksponata"
+        android:layout_below="@+id/tabela"
         />
 
     <android.support.v4.widget.NestedScrollView

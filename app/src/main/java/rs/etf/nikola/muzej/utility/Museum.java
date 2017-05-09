@@ -1,6 +1,7 @@
 package rs.etf.nikola.muzej.utility;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,6 +17,7 @@ public class Museum extends LinkedList<Exhibit> {
     private static Museum loadFromDisk() {
         Museum museum = null;
         try {
+            Log.i("Beacon", "LOAD FROM DISK");
             FileInputStream fis = MyApplication.getAppContext().openFileInput("museum.dat");
             ObjectInputStream ois = new ObjectInputStream(fis);
             museum = (Museum) ois.readObject();
@@ -32,6 +34,7 @@ public class Museum extends LinkedList<Exhibit> {
 
     public static void saveToDisk() {
         try {
+            Log.i("Beacon", "SAVE TO DISK");
             FileOutputStream fos = MyApplication.getAppContext().openFileOutput("museum.dat", Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(Museum.instance);
@@ -43,7 +46,7 @@ public class Museum extends LinkedList<Exhibit> {
         }
     }
 
-    public boolean doesNameExist(String name) {
+    public static boolean doesNameExist(String name) {
         for(Exhibit exhibit:instance) {
             if(exhibit.getName().equals(name))
                 return true;
@@ -51,7 +54,7 @@ public class Museum extends LinkedList<Exhibit> {
         return false;
     }
 
-    public Exhibit getExhibitByName(String name) {
+    public static Exhibit getExhibitByName(String name) {
         for(Exhibit exhibit:instance) {
             if(exhibit.getName().equals(name))
                 return exhibit;

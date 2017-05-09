@@ -3,6 +3,7 @@ package rs.etf.nikola.muzej;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +18,7 @@ public class MyApplication extends Application {
         prefs = getSharedPreferences("rs.etf.nikola.muzej.MyApplication", MODE_PRIVATE);
         if (prefs.getBoolean("firstrun", true)) {
             try {
+                Log.i("Beacon", "FIRST TIME");
                 FileOutputStream fos = context.openFileOutput("museum.dat", Context.MODE_PRIVATE);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(null);

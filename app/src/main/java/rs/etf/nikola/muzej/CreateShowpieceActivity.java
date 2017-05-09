@@ -1,6 +1,7 @@
 package rs.etf.nikola.muzej;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -27,13 +30,15 @@ import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import ar.com.daidalos.afiledialog.FileChooserDialog;
 import rs.etf.nikola.muzej.utility.BeaconAdapter;
-import rs.etf.nikola.muzej.utility.Exhibit;
+import rs.etf.nikola.muzej.utility.MyBeacon;
 import rs.etf.nikola.muzej.utility.Showpiece;
 
 public class CreateShowpieceActivity extends AppCompatActivity implements BeaconConsumer, RangeNotifier {
@@ -42,7 +47,6 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
-
 //    static double sumRSSI = 0;
 //    static double avRSSI = 0;
 //    static int i = 0;
@@ -98,7 +102,6 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
         final BeaconAdapter adapter = new BeaconAdapter<>(list, showpiece, editText);
         recyclerView.setAdapter(adapter);
-        recyclerView.setPreserveFocusAfterLayout(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
@@ -109,11 +112,11 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 //        beaconManager.getBeaconParsers().add(new BeaconParser().
 //                setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.setForegroundScanPeriod(300l);
-        beaconManager.setForegroundBetweenScanPeriod(200l);
+        beaconManager.setForegroundScanPeriod(700l);
+        beaconManager.setForegroundBetweenScanPeriod(300l);
 
-        beaconManager.setBackgroundScanPeriod(300l);
-        beaconManager.setBackgroundBetweenScanPeriod(200l);
+        beaconManager.setBackgroundScanPeriod(700l);
+        beaconManager.setBackgroundBetweenScanPeriod(300l);
 
         beaconManager.bind(this);
 
@@ -121,14 +124,103 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("showpiece", showpiece);
+                intent.putExtra("showpiece", (Parcelable) showpiece);
 
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
 
+        findViewById(R.id.dodajUriImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FileChooserDialog dialog = new FileChooserDialog(CreateShowpieceActivity.this);
+
+                dialog.addListener(CreateShowpieceActivity.this.onImageSelectedListener);
+
+                dialog.loadFolder(Environment.getExternalStorageDirectory().getPath());
+
+                dialog.setFilter(".*jpg|.*png|.*gif|.*JPG|.*PNG|.*GIF");
+
+                dialog.setCanCreateFiles(false);
+
+                dialog.show();
+            }
+        });
+
+        findViewById(R.id.dodajUriText).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FileChooserDialog dialog = new FileChooserDialog(CreateShowpieceActivity.this);
+
+                dialog.addListener(CreateShowpieceActivity.this.onTextSelectedListener);
+
+                dialog.loadFolder(Environment.getExternalStorageDirectory().getPath());
+
+                dialog.setFilter(".*txt");
+
+                dialog.setCanCreateFiles(false);
+
+                dialog.show();
+            }
+        });
+
+        findViewById(R.id.dodajUriSound).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FileChooserDialog dialog = new FileChooserDialog(CreateShowpieceActivity.this);
+
+                dialog.addListener(CreateShowpieceActivity.this.onSoundSelectedListener);
+
+                dialog.loadFolder(Environment.getExternalStorageDirectory().getPath());
+
+                dialog.setFilter(".*3gp|.*mp4|.*m4a|.*mp3|.*mkv|.*wav|.*ogg");
+
+                dialog.setCanCreateFiles(false);
+
+                dialog.show();
+            }
+        });
     }
+
+    private FileChooserDialog.OnFileSelectedListener onImageSelectedListener = new FileChooserDialog.OnFileSelectedListener() {
+        public void onFileSelected(Dialog source, File file) {
+            source.hide();
+            String path = file.getAbsolutePath();
+            showpiece.setImage(path);
+            EditText et = (EditText) CreateShowpieceActivity.this.findViewById(R.id.uriImage);
+            et.setText(path);
+        }
+        public void onFileSelected(Dialog source, File folder, String name) {
+            source.hide();
+        }
+    };
+
+    private FileChooserDialog.OnFileSelectedListener onTextSelectedListener = new FileChooserDialog.OnFileSelectedListener() {
+        public void onFileSelected(Dialog source, File file) {
+            source.hide();
+            String path = file.getAbsolutePath();
+            showpiece.setText(path);
+            EditText et = (EditText) CreateShowpieceActivity.this.findViewById(R.id.uriText);
+            et.setText(path);
+        }
+        public void onFileSelected(Dialog source, File folder, String name) {
+            source.hide();
+        }
+    };
+
+    private FileChooserDialog.OnFileSelectedListener onSoundSelectedListener = new FileChooserDialog.OnFileSelectedListener() {
+        public void onFileSelected(Dialog source, File file) {
+            source.hide();
+            String path = file.getAbsolutePath();
+            showpiece.setSound(path);
+            EditText et = (EditText) CreateShowpieceActivity.this.findViewById(R.id.uriSound);
+            et.setText(path);
+        }
+        public void onFileSelected(Dialog source, File folder, String name) {
+            source.hide();
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -142,8 +234,20 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        Region region = new Region("all-beacons-region", null, null, null);
+        try {
+            beaconManager.stopMonitoringBeaconsInRegion(region);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        beaconManager.removeAllRangeNotifiers();
+        try {
+            beaconManager.stopRangingBeaconsInRegion(region);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         beaconManager.unbind(this);
+        super.onDestroy();
     }
 
     @Override
@@ -224,56 +328,6 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //        }
 //    }
 
-    private class MyBeacon implements Comparable<MyBeacon> {
-        private final Beacon beacon;
-        private boolean distance;
-        private long timestamp;
-//        private List<Item> items;
-
-        public MyBeacon(Beacon beacon,boolean distance) {
-            this.beacon = beacon;
-            this.distance = distance;
-            this.timestamp = System.currentTimeMillis();
-//            this.items = new LinkedList<>();
-        }
-
-        public Beacon getBeacon() {
-            return beacon;
-        }
-
-//        public List<Item> getItems() {
-//            return items;
-//        }
-
-        public boolean isTimeExceeded() {
-
-            // More then 3 seconds
-            return (System.currentTimeMillis() - this.timestamp) > 3000;
-        }
-
-        public void refresh() {
-            this.timestamp = System.currentTimeMillis();
-        }
-
-        @Override
-        public String toString() {
-            if(!distance)
-                return "id:" + beacon.getId1() + ", distance > 1m";
-            else
-                return "id:" + beacon.getId1() + ", distance < 1m";
-        }
-
-        @Override
-        public int compareTo(@NonNull MyBeacon o) {
-            return this.getBeacon().getId1().compareTo(o.getBeacon().getId1());
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return obj.getClass() == MyBeacon.class && this.compareTo((MyBeacon) obj) == 0;
-        }
-    }
-
     private final List<MyBeacon> list = new LinkedList<>();
 
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
@@ -282,7 +336,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         Log.i("Beacon", "Beacons: " + beacons.size());
 
         for (Beacon beacon: beacons) {
-            Log.i("Beacon", "Beacons: " + beacon.getId1() + ", rssi: " + beacon.getRssi()) ;
+            Log.i("Beacon", "Beacons: " + beacon.getId1() + ", rssi: " + beacon.getRssi());
 //            Identifier namespaceId = beacon.getId1();
 //            Identifier instanceId = beacon.getId2();
 
@@ -333,8 +387,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                    "distance2: " + r + "\n\n" +
 //                    "average: " + avgRssi;
 
-
-            list1.add(new MyBeacon(beacon, beacon.getTxPower() < beacon.getRssi()));
+            list1.add(new MyBeacon(beacon.getId1().toString(), beacon.getTxPower() < beacon.getRssi()));
 
             // Do we have telemetry data?
 //            if (beacon.getExtraDataFields().size() > 0) {
@@ -383,8 +436,8 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                     } else {
                         MyBeacon item = list.get(index);
                         item.refresh();
-                        if (item.distance != newItem.distance) {
-                            item.distance = newItem.distance;
+                        if (item.getDistance() != newItem.getDistance()) {
+                            item.setDistance(newItem.getDistance());
                             hasChanges = true;
                         }
                     }
