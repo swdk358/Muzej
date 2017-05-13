@@ -41,6 +41,7 @@
         android:background="@android:drawable/editbox_background"
         android:inputType="text"
         android:layout_alignBaseline="@+id/naziv"
+        android:maxLines="1"
         />
 
     <View
@@ -48,7 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/colorPrimary"
-        android:layout_below="@+id/naziv" />
+        android:layout_below="@+id/naziv"
+        />
 
     <TextView
         android:layout_width="match_parent"

@@ -12,31 +12,51 @@
     android:focusableInTouchMode="true"
     tools:context="rs.etf.nikola.muzej.CreateShowpieceActivity">
 
-    <TextView
+    <View
+        android:id="@+id/linija6"
         android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-- Naziv eksponata --"
+        android:text="Naziv eksponata:"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:gravity="center"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/naziv"
+        android:layout_below="@+id/linija6"
         />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:layout_below="@+id/naziv"
+        android:layout_below="@+id/linija6"
         android:id="@+id/inputNazivEksponata"
+        android:layout_toRightOf="@+id/naziv"
+        android:background="@android:drawable/editbox_background"
+        android:layout_alignBaseline="@+id/naziv"
+        android:maxLines="1"
+        />
+
+    <View
+        android:id="@+id/linija7"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/naziv"
         />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tabela"
-        android:layout_below="@+id/inputNazivEksponata">
+        android:layout_below="@+id/linija7">
 
         <TableRow
             android:weightSum="1">
@@ -48,6 +68,9 @@
                 android:id="@+id/uriImage"
                 android:layout_weight="0.7"
                 android:editable="false"
+                android:background="@android:drawable/editbox_background"
+                android:layout_gravity="center"
+                android:maxLines="1"
                 />
 
             <Button
@@ -71,6 +94,9 @@
                 android:id="@+id/uriText"
                 android:layout_weight="0.7"
                 android:editable="false"
+                android:background="@android:drawable/editbox_background"
+                android:layout_gravity="center"
+                android:maxLines="1"
                 />
 
             <Button
@@ -84,7 +110,6 @@
 
         </TableRow>
 
-
         <TableRow
             android:weightSum="1">
 
@@ -95,6 +120,9 @@
                 android:id="@+id/uriSound"
                 android:layout_weight="0.7"
                 android:editable="false"
+                android:background="@android:drawable/editbox_background"
+                android:layout_gravity="center"
+                android:maxLines="1"
                 />
 
             <Button
@@ -110,6 +138,15 @@
 
     </TableLayout>
 
+    <View
+        android:id="@+id/linija8"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/tabela"
+        />
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -120,13 +157,21 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/text2"
-        android:layout_below="@+id/tabela"
+        android:layout_below="@+id/linija8"
+        />
+
+    <View
+        android:id="@+id/linija9"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/text2"
         />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/text2"
+        android:layout_below="@+id/linija9"
         android:layout_above="@+id/kreirajEksponat">
 
         <RelativeLayout
