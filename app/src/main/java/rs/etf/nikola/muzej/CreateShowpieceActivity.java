@@ -44,6 +44,7 @@ import rs.etf.nikola.muzej.utility.Showpiece;
 public class CreateShowpieceActivity extends AppCompatActivity implements BeaconConsumer, RangeNotifier {
     private final Showpiece showpiece = new Showpiece();
     private BeaconManager beaconManager;
+    private boolean exit = false;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
@@ -127,6 +128,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                 intent.putExtra("showpiece", (Parcelable) showpiece);
 
                 setResult(RESULT_OK, intent);
+                exit = true;
                 finish();
             }
         });
@@ -234,6 +236,12 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     @Override
     protected void onDestroy() {
+        if(!exit) {
+            Intent intent = new Intent();
+            intent.putExtra("showpiece", (Parcelable) showpiece);
+
+            setResult(RESULT_CANCELED, intent);
+        }
         Region region = new Region("all-beacons-region", null, null, null);
         try {
             beaconManager.stopMonitoringBeaconsInRegion(region);

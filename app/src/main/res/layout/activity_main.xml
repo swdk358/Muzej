@@ -14,7 +14,7 @@
         android:id="@+id/titleLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dobrodošli u aplikaciju za kreiranje interaktivnih izložbi."
+        android:text="Dobrodošli u aplikaciju za kreiranje interaktivnih izložbi"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
         android:gravity="center"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -25,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/colorPrimary"
-        android:layout_below="@+id/titleLabel"
-        />
+        android:layout_below="@+id/titleLabel" />
 
     <TextView
         android:id="@+id/text2"
@@ -66,14 +65,29 @@
                 android:layout_height="wrap_content"
                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dodaj izložbu"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                android:layout_toLeftOf="@+id/dodajIzlozbu"
+                android:layout_below="@+id/exhibitList"
+                />
+
             <ImageButton
                 android:id="@+id/dodajIzlozbu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/exhibitList"
                 android:background="@android:drawable/btn_default"
                 android:src="@drawable/ic_add"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
                 />
 
         </RelativeLayout>

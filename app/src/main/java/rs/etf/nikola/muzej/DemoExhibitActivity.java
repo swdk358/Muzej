@@ -30,6 +30,7 @@ import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -371,17 +372,29 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
                         ImageView iw = (ImageView) findViewById(R.id.imageView);
                         iw.setImageURI(Uri.parse(currentSP.getImage()));
 
+                        InputStream is = null;
                         try {
-                            InputStream is = getContentResolver().openInputStream(Uri.parse(currentSP.getText()));
+                            is = getContentResolver().openInputStream(Uri.parse(currentSP.getText()));
                             byte[] b = new byte[is.available()];
-                            if(is.available() == is.read(b)) {
+                            if (is.available() == is.read(b)) {
                                 TextView tw = (TextView) findViewById(R.id.textView);
                                 tw.setText(new String(b));
                                 tw.setMovementMethod(new ScrollingMovementMethod());
                             }
                             is.close();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            try{
+                                is = getContentResolver().openInputStream(Uri.fromFile(new File(currentSP.getText())));
+                                byte[] b = new byte[is.available()];
+                                if (is.available() == is.read(b)) {
+                                    TextView tw = (TextView) findViewById(R.id.textView);
+                                    tw.setText(new String(b));
+                                    tw.setMovementMethod(new ScrollingMovementMethod());
+                                }
+                                is.close();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                         }
 
                         if(mediaPlayer != null) {

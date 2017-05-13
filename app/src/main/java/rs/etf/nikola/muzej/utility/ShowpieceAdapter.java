@@ -14,11 +14,11 @@ import rs.etf.nikola.muzej.DemoExhibitActivity;
 import rs.etf.nikola.muzej.R;
 
 
-public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
+public class ShowpieceAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
     private Activity activity;
     protected final List<T> objects;
 
-    public ExhibitAdapter(List<T> objects, Activity activity) {
+    public ShowpieceAdapter(List<T> objects, Activity activity) {
         this.objects = objects;
         this.activity = activity;
     }
@@ -37,22 +37,21 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
     public void onBindViewHolder(ExhibitViewHolder holder, final int position) {
         holder.mTextView.setText(objects.get(position).toString());
 
-        holder.mTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView text = (TextView) v;
-                Intent intent = new Intent(activity, DemoExhibitActivity.class);
-                intent.putExtra("exhibitName", text.getText().toString());
-                activity.startActivity(intent);
-            }
-        });
+//        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TextView text = (TextView) v;
+//                Intent intent = new Intent(activity, DemoExhibitActivity.class);
+//                intent.putExtra("exhibitName", text.getText().toString());
+//                activity.startActivity(intent);
+//            }
+//        });
 
         holder.mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 objects.remove(position);
-                Museum.saveToDisk();
-                ExhibitAdapter.this.notifyDataSetChanged();
+                ShowpieceAdapter.this.notifyDataSetChanged();
             }
         });
     }

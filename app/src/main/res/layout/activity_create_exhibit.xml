@@ -12,25 +12,43 @@
     android:focusableInTouchMode="true"
     tools:context="rs.etf.nikola.muzej.CreateExhibitActivity">
 
-    <TextView
+    <View
+        android:id="@+id/linija3"
         android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-- Naziv izložbe --"
+        android:text="Naziv izložbe:"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:gravity="center"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/naziv"
+        android:layout_below="@+id/linija3"
         />
 
     <EditText
+        android:id="@+id/inputNazivIzlozbe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/linija3"
+        android:layout_toRightOf="@+id/naziv"
+        android:background="@android:drawable/editbox_background"
         android:inputType="text"
-        android:layout_below="@+id/naziv"
-        android:id="@+id/inputNazivIzlozbe"
+        android:layout_alignBaseline="@+id/naziv"
         />
+
+    <View
+        android:id="@+id/linija4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/naziv" />
 
     <TextView
         android:layout_width="match_parent"
@@ -42,14 +60,22 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:id="@+id/text2"
-        android:layout_below="@+id/inputNazivIzlozbe"
+        android:layout_below="@+id/linija4"
         />
+
+    <View
+        android:id="@+id/linija5"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/text2" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/text2"
-        android:layout_above="@+id/kreirajIzlozbu">
+        android:layout_above="@+id/kreirajIzlozbu"
+        android:scrollbars="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,14 +90,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/showpieceList"
-                android:text="+ Dodaj novi eksponat"
-                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:text="Dodaj eksponat"
                 android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
                 android:paddingStart="?android:attr/listPreferredItemPaddingStart"
                 android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                 android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                android:id="@+id/text1"
+                android:layout_toLeftOf="@+id/dodajEksponat"
+                android:layout_below="@+id/showpieceList"
+                />
+
+            <ImageButton
+                android:id="@+id/dodajEksponat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/showpieceList"
+                android:background="@android:drawable/btn_default"
+                android:src="@drawable/ic_add"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
                 />
 
         </RelativeLayout>

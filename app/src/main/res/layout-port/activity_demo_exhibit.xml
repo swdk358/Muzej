@@ -25,6 +25,8 @@
         android:layout_height="0dp"
         android:layout_weight="0.44"
         android:scrollbars = "vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         />
 
     <SeekBar

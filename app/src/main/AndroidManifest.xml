@@ -27,7 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateExhibitActivity">
+        <activity android:name=".CreateExhibitActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rs.etf.nikola.muzej.MainActivity" />

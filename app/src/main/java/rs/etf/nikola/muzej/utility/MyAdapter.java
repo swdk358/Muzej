@@ -20,7 +20,7 @@ public class MyAdapter<T> extends RecyclerView.Adapter<MyViewHolder> {
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.list_item1, parent, false);
 
         return new MyViewHolder(v);
 

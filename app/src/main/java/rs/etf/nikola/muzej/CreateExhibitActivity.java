@@ -17,6 +17,7 @@ import rs.etf.nikola.muzej.utility.Exhibit;
 import rs.etf.nikola.muzej.utility.Museum;
 import rs.etf.nikola.muzej.utility.MyAdapter;
 import rs.etf.nikola.muzej.utility.Showpiece;
+import rs.etf.nikola.muzej.utility.ShowpieceAdapter;
 
 public class CreateExhibitActivity extends AppCompatActivity {
     private final Exhibit exhibit = new Exhibit();
@@ -35,10 +36,10 @@ public class CreateExhibitActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        MyAdapter adapter = new MyAdapter<>(exhibit);
+        ShowpieceAdapter adapter = new ShowpieceAdapter<>(exhibit, this);
         recyclerView.setAdapter(adapter);
 
-        findViewById(R.id.text1).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.dodajEksponat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CreateExhibitActivity.this, CreateShowpieceActivity.class);
