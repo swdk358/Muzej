@@ -45,9 +45,9 @@ public class MyBeacon implements Comparable<MyBeacon> {
     @Override
     public String toString() {
         if(!distance)
-            return "id:" + beaconUUID + ", distance > 1m";
+            return "ID:" + beaconUUID + "\nDistance:Out of range";
         else
-            return "id:" + beaconUUID + ", distance < 1m";
+            return "ID:" + beaconUUID + "\nDistance:In range";
     }
 
     @Override
