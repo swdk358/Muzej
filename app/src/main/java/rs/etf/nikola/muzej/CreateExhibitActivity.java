@@ -20,18 +20,20 @@ import rs.etf.nikola.muzej.utility.Showpiece;
 import rs.etf.nikola.muzej.utility.ShowpieceAdapter;
 
 public class CreateExhibitActivity extends AppCompatActivity {
-    private final Exhibit exhibit = new Exhibit();
+    protected Exhibit exhibit;
+    protected RecyclerView recyclerView;
 
     private static final int ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        exhibit = new Exhibit();
         setContentView(R.layout.activity_create_exhibit);
 
         setTitle(R.string.activity_create_exhibit_title);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.showpieceList);
+        recyclerView = (RecyclerView) findViewById(R.id.showpieceList);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);

@@ -1,17 +1,15 @@
 package rs.etf.nikola.muzej.utility;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
-import rs.etf.nikola.muzej.DemoExhibitActivity;
 import rs.etf.nikola.muzej.R;
+import rs.etf.nikola.muzej.ShowpieceDialogFragment;
 
 
 public class ShowpieceAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
@@ -34,23 +32,23 @@ public class ShowpieceAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(ExhibitViewHolder holder, final int position) {
+    public void onBindViewHolder(final ExhibitViewHolder holder, int position) {
         holder.mTextView.setText(objects.get(position).toString());
 
-//        holder.mTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TextView text = (TextView) v;
-//                Intent intent = new Intent(activity, DemoExhibitActivity.class);
-//                intent.putExtra("exhibitName", text.getText().toString());
-//                activity.startActivity(intent);
-//            }
-//        });
+        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowpieceDialogFragment newFragment = ShowpieceDialogFragment.newInstance(
+                        (Showpiece) objects.get(holder.getAdapterPosition()));
+                newFragment.show(activity.getFragmentManager(),
+                        ((Showpiece) objects.get(holder.getAdapterPosition())).getName());
+            }
+        });
 
         holder.mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                objects.remove(position);
+                objects.remove(holder.getAdapterPosition());
                 ShowpieceAdapter.this.notifyDataSetChanged();
             }
         });

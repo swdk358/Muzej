@@ -27,7 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateExhibitActivity"
+        <activity
+            android:name=".CreateExhibitActivity"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -39,6 +40,12 @@
                 android:value="rs.etf.nikola.muzej.CreateExhibitActivity" />
         </activity>
         <activity android:name=".DemoExhibitActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="rs.etf.nikola.muzej.MainActivity" />
+        </activity>
+        <activity android:name=".EditExhibitActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rs.etf.nikola.muzej.MainActivity" />

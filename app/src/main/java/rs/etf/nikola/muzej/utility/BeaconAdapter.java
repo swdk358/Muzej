@@ -20,7 +20,7 @@ public class BeaconAdapter<T> extends MyAdapter<T> {
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
         if(focusPos >= getItemCount())
@@ -42,10 +42,10 @@ public class BeaconAdapter<T> extends MyAdapter<T> {
                 Log.i("Beacon", "Onclick");
                 TextView text = (TextView) v;
                 String s = text.getText().toString();
-                String uuid = s.split(",")[0].split(":")[1];
+                String uuid = s.split("\n")[0].split(":")[1];
                 showpiece.setBeaconUUID(uuid);
                 showpiece.setItemFocused(true);
-                focusPos = position;
+                focusPos = holder.getAdapterPosition();
             }
         });
     }

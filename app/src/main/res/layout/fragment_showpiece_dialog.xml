@@ -1,0 +1,122 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="rs.etf.nikola.muzej.ShowpieceDialogFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/naslov"
+        android:background="@color/colorPrimary"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="#FFFFFF"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/beaconNaslov"
+        android:layout_below="@+id/Title"
+        android:text="--bikon--"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/beaconUUID"
+        android:layout_below="@+id/beaconNaslov"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        />
+
+    <View
+        android:id="@+id/linija1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/beaconUUID"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/slikaNaslov"
+        android:layout_below="@+id/linija1"
+        android:text="--slika--"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/slika"
+        android:layout_below="@+id/slikaNaslov"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        />
+
+    <View
+        android:id="@+id/linija2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/slika"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tekstNaslov"
+        android:layout_below="@+id/linija2"
+        android:text="--tekst--"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tekst"
+        android:layout_below="@+id/tekstNaslov"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        />
+
+    <View
+        android:id="@+id/linija3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/tekst"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zvukNaslov"
+        android:layout_below="@+id/linija3"
+        android:text="--audio--"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zvuk"
+        android:layout_below="@+id/zvukNaslov"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        />
+
+</RelativeLayout>

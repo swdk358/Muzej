@@ -47,6 +47,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
     private boolean exit = false;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 2;
     private static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
 //    static double sumRSSI = 0;
 //    static double avRSSI = 0;
@@ -105,7 +106,8 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         recyclerView.setAdapter(adapter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_COARSE_LOCATION);
         }
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
@@ -173,6 +175,8 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                 FileChooserDialog dialog = new FileChooserDialog(CreateShowpieceActivity.this);
 
                 dialog.addListener(CreateShowpieceActivity.this.onSoundSelectedListener);
+
+                Log.i("Beacon", "Path: " + Environment.getExternalStorageDirectory().getPath());
 
                 dialog.loadFolder(Environment.getExternalStorageDirectory().getPath());
 
@@ -262,10 +266,43 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_COARSE_LOCATION: {
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0
+                        && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+
+                    });
+                    builder.show();
+                }
+                if (grantResults.length > 1
+                        && grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Functionality limited");
+                    builder.setMessage("Since storage access has not been granted, this app will not be able to access storage.");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+
+                    });
+                    builder.show();
+                }
+            }
+            case PERMISSION_REQUEST_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Functionality limited");
+                    builder.setMessage("Since storage access has not been granted, this app will not be able to access storage.");
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 

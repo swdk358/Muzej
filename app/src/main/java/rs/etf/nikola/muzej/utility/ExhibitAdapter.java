@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import rs.etf.nikola.muzej.DemoExhibitActivity;
+import rs.etf.nikola.muzej.EditExhibitActivity;
 import rs.etf.nikola.muzej.R;
 
 
@@ -27,14 +28,14 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
     public ExhibitViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.list_item2, parent, false);
 
         return new ExhibitViewHolder(v);
 
     }
 
     @Override
-    public void onBindViewHolder(ExhibitViewHolder holder, final int position) {
+    public void onBindViewHolder(final ExhibitViewHolder holder, int position) {
         holder.mTextView.setText(objects.get(position).toString());
 
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
@@ -50,9 +51,18 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
         holder.mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                objects.remove(position);
+                objects.remove(holder.getAdapterPosition());
                 Museum.saveToDisk();
                 ExhibitAdapter.this.notifyDataSetChanged();
+            }
+        });
+
+        holder.mImageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, EditExhibitActivity.class);
+                intent.putExtra("exhibitName", objects.get(holder.getAdapterPosition()).toString());
+                activity.startActivity(intent);
             }
         });
     }
