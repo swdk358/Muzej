@@ -55,8 +55,8 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
     private SeekBar seekbar;
     private static MediaPlayer mediaPlayer;
 
-    private double currentTime = 0;
-    private double finalTime = 0;
+    private int currentTime = 0;
+    private int finalTime = 0;
 
     private Handler myHandler = new Handler();
     private int forwardTime = 5000;
@@ -89,17 +89,6 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
             @Override
             public void onClick(View v) {
                 mediaPlayer.start();
-
-                finalTime = mediaPlayer.getDuration();
-                currentTime = mediaPlayer.getCurrentPosition();
-
-                if (firstTime) {
-                    seekbar.setMax((int) finalTime);
-                    firstTime = false;
-                }
-
-                seekbar.setProgress((int) currentTime);
-                myHandler.postDelayed(UpdateSongTime, 100);
                 bpause.setEnabled(true);
                 bplay.setEnabled(false);
             }
@@ -117,26 +106,26 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
         bforward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int temp = (int) currentTime;
+                int temp = currentTime;
 
                 if((temp + forwardTime) <= finalTime)
                     currentTime = currentTime + forwardTime;
                 else
                     currentTime = finalTime;
-                mediaPlayer.seekTo((int) currentTime);
+                mediaPlayer.seekTo(currentTime);
             }
         });
 
         brewind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int temp = (int) currentTime;
+                int temp = currentTime;
 
                 if((temp - backwardTime) > 0)
                     currentTime = currentTime - backwardTime;
                 else
                     currentTime = 0;
-                mediaPlayer.seekTo((int) currentTime);
+                mediaPlayer.seekTo(currentTime);
             }
         });
 
@@ -144,8 +133,11 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 try {
-                    if (mediaPlayer != null && fromUser)
+                    if (mediaPlayer != null && fromUser) {
                         mediaPlayer.seekTo(progress);
+                        currentTime = mediaPlayer.getCurrentPosition();
+                        seekbar.setProgress(currentTime);
+                    }
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
                 }
@@ -186,11 +178,11 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
 //                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 //        beaconManager.getBeaconParsers().add(new BeaconParser().
 //                setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.setForegroundScanPeriod(700l);
-        beaconManager.setForegroundBetweenScanPeriod(300l);
+        beaconManager.setForegroundScanPeriod(800l);
+        beaconManager.setForegroundBetweenScanPeriod(200l);
 
-        beaconManager.setBackgroundScanPeriod(700l);
-        beaconManager.setBackgroundBetweenScanPeriod(300l);
+        beaconManager.setBackgroundScanPeriod(800l);
+        beaconManager.setBackgroundBetweenScanPeriod(200l);
 
         beaconManager.bind(this);
 
@@ -200,7 +192,7 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
         public void run() {
             if(mediaPlayer != null) {
                 currentTime = mediaPlayer.getCurrentPosition();
-                seekbar.setProgress((int) currentTime);
+                seekbar.setProgress(currentTime);
                 myHandler.postDelayed(this, 100);
             }
         }
@@ -288,7 +280,7 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         final List<MyBeacon> list1 = new LinkedList<>();
         for (Beacon beacon: beacons)
-            list1.add(new MyBeacon(beacon.getId1().toString(), beacon.getTxPower() < beacon.getRssi()));
+            list1.add(new MyBeacon(beacon.getId1().toString(), beacon.getTxPower(), beacon.getRssi()));
 
         final AppCompatActivity activity = this;
 
@@ -318,10 +310,10 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
                     } else {
                         MyBeacon item = list.get(index);
                         item.refresh();
-                        if (item.getDistance() != newItem.getDistance()) {
-                            item.setDistance(newItem.getDistance());
+                        boolean distance = item.isInRangeActivate();
+                        item.addRssi(newItem.getTxPower(), newItem.getRssiList());
+                        if (item.isInRangeActivate() != distance)
                             hasChanges = true;
-                        }
                     }
                 }
 
@@ -330,19 +322,21 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
 
                 boolean isSame = false;
                 boolean isFound = false;
+                double minDistance = 1.5;
                 for (MyBeacon item: list)
-                    if(item.getDistance()) {
+                    if(item.isInRangeDeactivate() && item.getDistance() < minDistance) {
+                        minDistance = item.getDistance();
                         String uuid = item.getBeaconUUID();
                         Showpiece sp = exhibit.getShowpieceByUUID(uuid);
                         if(sp != null)
-                            if(sp.equals(currentSP)) {
+                            if(sp.equals(currentSP))
                                 isSame = true;
-                                break;
-                            }
                             else {
+                                if(currentSP != null)
+                                    currentSP.setProgress(mediaPlayer.getCurrentPosition());
                                 currentSP = sp;
+                                isSame = false;
                                 isFound = true;
-                                break;
                             }
                     }
 
@@ -354,6 +348,8 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
                         TextView tw = (TextView) findViewById(R.id.textView);
                         tw.setText(null);
 
+                        if(currentSP != null)
+                            currentSP.setProgress(mediaPlayer.getCurrentPosition());
                         currentSP = null;
 
                         if(mediaPlayer != null) {
@@ -402,18 +398,26 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
                             try {
                                 mediaPlayer.setDataSource(activity, Uri.parse(currentSP.getSound()));
                                 mediaPlayer.prepare();
-                                mediaPlayer.setLooping(true);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             mediaPlayer = MediaPlayer.create(activity, Uri.parse(currentSP.getSound()));
-                            mediaPlayer.setLooping(true);
                         }
+                        mediaPlayer.setLooping(true);
+                        mediaPlayer.seekTo(currentSP.getProgress());
+
+                        finalTime = mediaPlayer.getDuration();
+                        currentTime = mediaPlayer.getCurrentPosition();
+                        seekbar.setMax(finalTime);
+                        seekbar.setProgress(currentTime);
+
+                        myHandler.postDelayed(UpdateSongTime, 100);
+
                         brewind.setEnabled(true);
                         bforward.setEnabled(true);
-                        firstTime = true;
-                        bplay.callOnClick();
+                        bplay.setEnabled(true);
+                        bpause.setEnabled(false);
                     }
             }
         });

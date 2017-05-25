@@ -1,22 +1,36 @@
 package rs.etf.nikola.muzej.utility;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class BeaconAdapter<T> extends MyAdapter<T> {
+import rs.etf.nikola.muzej.R;
+
+public class BeaconAdapter extends MyAdapter<MyBeacon, MyViewHolder> {
     private final Showpiece showpiece;
     private int focusPos;
     private EditText editText;
 
-    public BeaconAdapter(List<T> objects, Showpiece showpiece, EditText editText) {
+    public BeaconAdapter(List<MyBeacon> objects, Showpiece showpiece, EditText editText) {
         super(objects);
         this.showpiece = showpiece;
         this.focusPos = 0;
         this.editText = editText;
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_beacon, parent, false);
+
+        return new MyViewHolder(v);
+
     }
 
     @Override

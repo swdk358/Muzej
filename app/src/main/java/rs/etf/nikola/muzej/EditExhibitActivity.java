@@ -20,7 +20,7 @@ public class EditExhibitActivity extends CreateExhibitActivity {
         if(exhibit == null)
             finish();
 
-        ShowpieceAdapter adapter = new ShowpieceAdapter<>(exhibit, this);
+        ShowpieceAdapter adapter = new ShowpieceAdapter(exhibit, this);
         recyclerView.setAdapter(adapter);
 
         ((EditText) findViewById(R.id.inputNazivIzlozbe)).setText(exhibit.getName());

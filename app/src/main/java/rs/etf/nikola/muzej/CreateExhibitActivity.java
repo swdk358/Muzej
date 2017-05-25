@@ -38,7 +38,7 @@ public class CreateExhibitActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ShowpieceAdapter adapter = new ShowpieceAdapter<>(exhibit, this);
+        ShowpieceAdapter adapter = new ShowpieceAdapter(exhibit, this);
         recyclerView.setAdapter(adapter);
 
         findViewById(R.id.dodajEksponat).setOnClickListener(new View.OnClickListener() {

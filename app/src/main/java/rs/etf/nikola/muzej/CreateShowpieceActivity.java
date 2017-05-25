@@ -46,8 +46,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
     private BeaconManager beaconManager;
     private boolean exit = false;
 
-    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 2;
+    private static final int PERMISSION_REQUEST = 1;
     private static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
 //    static double sumRSSI = 0;
 //    static double avRSSI = 0;
@@ -102,12 +101,12 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final BeaconAdapter adapter = new BeaconAdapter<>(list, showpiece, editText);
+        final BeaconAdapter adapter = new BeaconAdapter(list, showpiece, editText);
         recyclerView.setAdapter(adapter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
         }
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
@@ -115,11 +114,11 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 //        beaconManager.getBeaconParsers().add(new BeaconParser().
 //                setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.setForegroundScanPeriod(700l);
-        beaconManager.setForegroundBetweenScanPeriod(300l);
+        beaconManager.setForegroundScanPeriod(800l);
+        beaconManager.setForegroundBetweenScanPeriod(200l);
 
-        beaconManager.setBackgroundScanPeriod(700l);
-        beaconManager.setBackgroundBetweenScanPeriod(300l);
+        beaconManager.setBackgroundScanPeriod(800l);
+        beaconManager.setBackgroundBetweenScanPeriod(200l);
 
         beaconManager.bind(this);
 
@@ -180,7 +179,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
                 dialog.loadFolder(Environment.getExternalStorageDirectory().getPath());
 
-                dialog.setFilter(".*3gp|.*mp4|.*m4a|.*mp3|.*mkv|.*wav|.*ogg");
+                dialog.setFilter(".*3gp|.*mp4|.*m4a|.*mp3|.*mkv|.*wav|.*ogg|.*amr");
 
                 dialog.setCanCreateFiles(false);
 
@@ -265,7 +264,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_REQUEST_COARSE_LOCATION: {
+            case PERMISSION_REQUEST: {
                 if (grantResults.length > 0
                         && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -283,23 +282,6 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                 }
                 if (grantResults.length > 1
                         && grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since storage access has not been granted, this app will not be able to access storage.");
-                    builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
-                    });
-                    builder.show();
-                }
-            }
-            case PERMISSION_REQUEST_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0
-                        && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since storage access has not been granted, this app will not be able to access storage.");
@@ -432,16 +414,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 //                    "distance2: " + r + "\n\n" +
 //                    "average: " + avgRssi;
 
-            list1.add(new MyBeacon(beacon.getId1().toString(), beacon.getTxPower() < beacon.getRssi()));
-
-            // Do we have telemetry data?
-//            if (beacon.getExtraDataFields().size() > 0) {
-//                long telemetryVersion = beacon.getExtraDataFields().get(0);
-//                long batteryMilliVolts = beacon.getExtraDataFields().get(1);
-//                long pduCount = beacon.getExtraDataFields().get(3);
-//                long uptime = beacon.getExtraDataFields().get(4);
-//
-//            }
+            list1.add(new MyBeacon(beacon.getId1().toString(), beacon.getTxPower(), beacon.getRssi()));
         }
 
         this.runOnUiThread(new Runnable() {
@@ -481,10 +454,10 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
                     } else {
                         MyBeacon item = list.get(index);
                         item.refresh();
-                        if (item.getDistance() != newItem.getDistance()) {
-                            item.setDistance(newItem.getDistance());
+                        boolean distance = item.isInRangeActivate();
+                        item.addRssi(newItem.getTxPower(), newItem.getRssiList());
+                        if (item.isInRangeActivate() != distance)
                             hasChanges = true;
-                        }
                     }
                 }
 

@@ -2,7 +2,6 @@ package rs.etf.nikola.muzej.utility;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,11 @@ import rs.etf.nikola.muzej.EditExhibitActivity;
 import rs.etf.nikola.muzej.R;
 
 
-public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
+public class ExhibitAdapter extends MyAdapter<Exhibit, ExhibitViewHolder> {
     private Activity activity;
-    protected final List<T> objects;
 
-    public ExhibitAdapter(List<T> objects, Activity activity) {
-        this.objects = objects;
+    public ExhibitAdapter(List<Exhibit> objects, Activity activity) {
+        super(objects);
         this.activity = activity;
     }
 
@@ -28,7 +26,7 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
     public ExhibitViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item2, parent, false);
+                .inflate(R.layout.list_item_exhibit, parent, false);
 
         return new ExhibitViewHolder(v);
 
@@ -36,7 +34,7 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
 
     @Override
     public void onBindViewHolder(final ExhibitViewHolder holder, int position) {
-        holder.mTextView.setText(objects.get(position).toString());
+        super.onBindViewHolder(holder, position);
 
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +46,7 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
             }
         });
 
-        holder.mImageButton.setOnClickListener(new View.OnClickListener() {
+        holder.mImageButtonObrisi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 objects.remove(holder.getAdapterPosition());
@@ -57,7 +55,7 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
             }
         });
 
-        holder.mImageButton1.setOnClickListener(new View.OnClickListener() {
+        holder.mImageButtonIzmeni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, EditExhibitActivity.class);
@@ -65,10 +63,5 @@ public class ExhibitAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
                 activity.startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return objects.size();
     }
 }

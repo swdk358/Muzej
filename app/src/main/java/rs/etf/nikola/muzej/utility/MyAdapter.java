@@ -1,34 +1,17 @@
 package rs.etf.nikola.muzej.utility;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
-import rs.etf.nikola.muzej.R;
+public abstract class MyAdapter<T1, T2 extends MyViewHolder> extends RecyclerView.Adapter<T2> {
+    protected final List<T1> objects;
 
-public class MyAdapter<T> extends RecyclerView.Adapter<MyViewHolder> {
-    protected final List<T> objects;
-
-    public MyAdapter(List<T> objects) {
+    public MyAdapter(List<T1> objects) {
        this.objects = objects;
     }
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item1, parent, false);
-
-        return new MyViewHolder(v);
-
-    }
-
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final T2 holder, int position) {
         holder.mTextView.setText(objects.get(position).toString());
     }
 

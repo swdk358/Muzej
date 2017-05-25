@@ -1,7 +1,6 @@
 package rs.etf.nikola.muzej.utility;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,28 +11,27 @@ import rs.etf.nikola.muzej.R;
 import rs.etf.nikola.muzej.ShowpieceDialogFragment;
 
 
-public class ShowpieceAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder> {
+public class ShowpieceAdapter extends MyAdapter<Showpiece, ShowpieceViewHolder> {
     private Activity activity;
-    protected final List<T> objects;
 
-    public ShowpieceAdapter(List<T> objects, Activity activity) {
-        this.objects = objects;
+    public ShowpieceAdapter(List<Showpiece> objects, Activity activity) {
+        super(objects);
         this.activity = activity;
     }
 
     @Override
-    public ExhibitViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ShowpieceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.list_item_showpiece, parent, false);
 
-        return new ExhibitViewHolder(v);
+        return new ShowpieceViewHolder(v);
 
     }
 
     @Override
-    public void onBindViewHolder(final ExhibitViewHolder holder, int position) {
-        holder.mTextView.setText(objects.get(position).toString());
+    public void onBindViewHolder(final ShowpieceViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
 
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,17 +43,12 @@ public class ShowpieceAdapter<T> extends RecyclerView.Adapter<ExhibitViewHolder>
             }
         });
 
-        holder.mImageButton.setOnClickListener(new View.OnClickListener() {
+        holder.mImageButtonObrisi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 objects.remove(holder.getAdapterPosition());
                 ShowpieceAdapter.this.notifyDataSetChanged();
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return objects.size();
     }
 }

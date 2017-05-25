@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ExhibitAdapter adapter = new ExhibitAdapter<>(Museum.instance, this);
+        ExhibitAdapter adapter = new ExhibitAdapter(Museum.instance, this);
         recyclerView.setAdapter(adapter);
 
         findViewById(R.id.dodajIzlozbu).setOnClickListener(new View.OnClickListener() {

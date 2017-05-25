@@ -15,6 +15,7 @@ public class Showpiece implements Serializable, Parcelable {
     private String sound;
     private boolean itemFocused;
     private boolean haveName;
+    private int progress;
 
     public Showpiece() {
         image = "android.resource://rs.etf.nikola.muzej/" + R.drawable.defaultimage;
@@ -22,6 +23,7 @@ public class Showpiece implements Serializable, Parcelable {
         sound = "android.resource://rs.etf.nikola.muzej/" + R.raw.defaultsound;
         itemFocused = false;
         haveName = false;
+        progress = 0;
     }
 
     protected Showpiece(Parcel in) {
@@ -121,5 +123,13 @@ public class Showpiece implements Serializable, Parcelable {
         dest.writeString(sound);
         dest.writeByte((byte) (itemFocused ? 1 : 0));
         dest.writeByte((byte) (haveName ? 1 : 0));
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }
