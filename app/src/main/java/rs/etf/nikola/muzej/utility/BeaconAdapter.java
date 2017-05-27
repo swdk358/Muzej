@@ -1,6 +1,5 @@
 package rs.etf.nikola.muzej.utility;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import rs.etf.nikola.muzej.R;
 public class BeaconAdapter extends MyAdapter<MyBeacon, MyViewHolder> {
     private final Showpiece showpiece;
     private int focusPos;
-    private EditText editText;
+    private final EditText editText;
 
     public BeaconAdapter(List<MyBeacon> objects, Showpiece showpiece, EditText editText) {
         super(objects);
@@ -53,7 +52,6 @@ public class BeaconAdapter extends MyAdapter<MyBeacon, MyViewHolder> {
                 v.setFocusableInTouchMode(true);
                 v.requestFocus();
                 v.setFocusableInTouchMode(false);
-                Log.i("Beacon", "Onclick");
                 TextView text = (TextView) v;
                 String s = text.getText().toString();
                 String uuid = s.split("\n")[0].split(":")[1];

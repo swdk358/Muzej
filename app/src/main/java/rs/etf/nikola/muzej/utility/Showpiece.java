@@ -26,7 +26,7 @@ public class Showpiece implements Serializable, Parcelable {
         progress = 0;
     }
 
-    protected Showpiece(Parcel in) {
+    private Showpiece(Parcel in) {
         name = in.readString();
         beaconUUID = in.readString();
         image = in.readString();

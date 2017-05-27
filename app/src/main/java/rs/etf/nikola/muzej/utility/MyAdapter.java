@@ -4,10 +4,10 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class MyAdapter<T1, T2 extends MyViewHolder> extends RecyclerView.Adapter<T2> {
-    protected final List<T1> objects;
+abstract class MyAdapter<T1, T2 extends MyViewHolder> extends RecyclerView.Adapter<T2> {
+    final List<T1> objects;
 
-    public MyAdapter(List<T1> objects) {
+    MyAdapter(List<T1> objects) {
        this.objects = objects;
     }
 

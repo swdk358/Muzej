@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,13 +14,12 @@ import android.widget.TextView;
 
 import rs.etf.nikola.muzej.utility.Exhibit;
 import rs.etf.nikola.muzej.utility.Museum;
-import rs.etf.nikola.muzej.utility.MyAdapter;
 import rs.etf.nikola.muzej.utility.Showpiece;
 import rs.etf.nikola.muzej.utility.ShowpieceAdapter;
 
 public class CreateExhibitActivity extends AppCompatActivity {
-    protected Exhibit exhibit;
-    protected RecyclerView recyclerView;
+    Exhibit exhibit;
+    RecyclerView recyclerView;
 
     private static final int ACTIVITY_REQUEST_CODE = 1;
 

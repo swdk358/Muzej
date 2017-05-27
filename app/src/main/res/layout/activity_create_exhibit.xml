@@ -12,70 +12,9 @@
     android:focusableInTouchMode="true"
     tools:context="rs.etf.nikola.muzej.CreateExhibitActivity">
 
-    <View
-        android:id="@+id/linija3"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorPrimary"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Naziv izložbe:"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:gravity="center"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:id="@+id/naziv"
-        android:layout_below="@+id/linija3"
-        />
-
-    <EditText
-        android:id="@+id/inputNazivIzlozbe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linija3"
-        android:layout_toRightOf="@+id/naziv"
-        android:background="@android:drawable/editbox_background"
-        android:inputType="text"
-        android:layout_alignBaseline="@+id/naziv"
-        android:maxLines="1"
-        />
-
-    <View
-        android:id="@+id/linija4"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorPrimary"
-        android:layout_below="@+id/naziv"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="-- Lista ekponata --"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:gravity="center"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:id="@+id/text2"
-        android:layout_below="@+id/linija4"
-        />
-
-    <View
-        android:id="@+id/linija5"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorPrimary"
-        android:layout_below="@+id/text2" />
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/text2"
         android:layout_above="@+id/kreirajIzlozbu"
         android:scrollbars="vertical">
 
@@ -83,9 +22,69 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/linija3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimary"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Naziv izložbe:"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:gravity="center"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                android:id="@+id/naziv"
+                android:layout_below="@+id/linija3"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linija3"
+                android:layout_toRightOf="@+id/naziv"
+                android:background="@android:drawable/editbox_background"
+                android:inputType="text"
+                android:layout_alignBaseline="@+id/naziv"
+                android:maxLines="1"
+                />
+
+            <View
+                android:id="@+id/linija4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimary"
+                android:layout_below="@+id/naziv"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-- Lista ekponata --"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:gravity="center"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                android:id="@+id/text2"
+                android:layout_below="@+id/linija4"
+                />
+
+            <View
+                android:id="@+id/linija5"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimary"
+                android:layout_below="@+id/text2" />
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:id="@+id/showpieceList"
+                android:layout_below="@+id/text2"
                 android:layout_height="wrap_content"
                 />
 

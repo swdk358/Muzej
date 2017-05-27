@@ -69,7 +69,6 @@
             android:layout_height="match_parent"
             android:text="||"
             android:id="@+id/button2"
-            android:layout_alignParentBottom="true"
             android:layout_weight="0.25"
             />
 

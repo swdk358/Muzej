@@ -7,18 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import rs.etf.nikola.muzej.DemoExhibitActivity;
 import rs.etf.nikola.muzej.EditExhibitActivity;
 import rs.etf.nikola.muzej.R;
 
 
 public class ExhibitAdapter extends MyAdapter<Exhibit, ExhibitViewHolder> {
-    private Activity activity;
+    private final Activity activity;
 
-    public ExhibitAdapter(List<Exhibit> objects, Activity activity) {
-        super(objects);
+    public ExhibitAdapter(Activity activity) {
+        super(Museum.instance);
         this.activity = activity;
     }
 

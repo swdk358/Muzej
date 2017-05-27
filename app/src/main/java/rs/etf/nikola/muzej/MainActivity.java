@@ -5,11 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import rs.etf.nikola.muzej.utility.ExhibitAdapter;
-import rs.etf.nikola.muzej.utility.Museum;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ExhibitAdapter adapter = new ExhibitAdapter(Museum.instance, this);
+        ExhibitAdapter adapter = new ExhibitAdapter(this);
         recyclerView.setAdapter(adapter);
 
         findViewById(R.id.dodajIzlozbu).setOnClickListener(new View.OnClickListener() {

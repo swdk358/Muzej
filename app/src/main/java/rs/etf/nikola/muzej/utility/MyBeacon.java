@@ -1,7 +1,6 @@
 package rs.etf.nikola.muzej.utility;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -53,10 +52,6 @@ public class MyBeacon implements Comparable<MyBeacon> {
     public int getTxPower() {
         return txPower;
     }
-
-    //        public List<Item> getItems() {
-//            return items;
-//        }
 
     public boolean isTimeExceeded() {
         // More then 3 seconds

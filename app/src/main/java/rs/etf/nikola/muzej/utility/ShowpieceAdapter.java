@@ -12,7 +12,7 @@ import rs.etf.nikola.muzej.ShowpieceDialogFragment;
 
 
 public class ShowpieceAdapter extends MyAdapter<Showpiece, ShowpieceViewHolder> {
-    private Activity activity;
+    private final Activity activity;
 
     public ShowpieceAdapter(List<Showpiece> objects, Activity activity) {
         super(objects);

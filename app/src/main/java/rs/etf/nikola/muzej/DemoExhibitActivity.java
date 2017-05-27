@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -17,7 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,8 +28,6 @@ import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -40,7 +35,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import rs.etf.nikola.muzej.utility.BeaconAdapter;
 import rs.etf.nikola.muzej.utility.Exhibit;
 import rs.etf.nikola.muzej.utility.Museum;
 import rs.etf.nikola.muzej.utility.MyBeacon;
@@ -58,11 +52,9 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
     private int currentTime = 0;
     private int finalTime = 0;
 
-    private Handler myHandler = new Handler();
-    private int forwardTime = 5000;
-    private int backwardTime = 5000;
-
-    private boolean firstTime = true;
+    private final Handler myHandler = new Handler();
+    private final int forwardTime = 5000;
+    private final int backwardTime = 5000;
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private static final int BLUETOOTH_ENABLE_REQUEST_ID = 6;
@@ -174,10 +166,6 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
         }
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
-//        beaconManager.getBeaconParsers().add(new BeaconParser().
-//                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
-//        beaconManager.getBeaconParsers().add(new BeaconParser().
-//                setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
         beaconManager.setForegroundScanPeriod(800l);
         beaconManager.setForegroundBetweenScanPeriod(200l);
 
@@ -188,7 +176,7 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
 
     }
 
-    private Runnable UpdateSongTime = new Runnable() {
+    private final Runnable UpdateSongTime = new Runnable() {
         public void run() {
             if(mediaPlayer != null) {
                 currentTime = mediaPlayer.getCurrentPosition();
@@ -267,8 +255,6 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
 
         try {
             beaconManager.startMonitoringBeaconsInRegion(region);
-//            beaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId",
-//                    Identifier.parse("e2c56db5-dffb-48d2-b060-d0f5a71096e0"), Identifier.parse("0"), Identifier.parse("0")));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -368,7 +354,7 @@ public class DemoExhibitActivity extends AppCompatActivity implements BeaconCons
                         ImageView iw = (ImageView) findViewById(R.id.imageView);
                         iw.setImageURI(Uri.parse(currentSP.getImage()));
 
-                        InputStream is = null;
+                        InputStream is;
                         try {
                             is = getContentResolver().openInputStream(Uri.parse(currentSP.getText()));
                             byte[] b = new byte[is.available()];

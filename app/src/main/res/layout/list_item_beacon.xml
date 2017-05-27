@@ -16,7 +16,6 @@
         android:clickable="true"
         android:focusable="true"
         android:background="@drawable/selector_high"
-        android:layout_toLeftOf="@+id/obrisi"
         />
 
     <View
