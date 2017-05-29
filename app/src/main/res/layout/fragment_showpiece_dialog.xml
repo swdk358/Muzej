@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/naslov"
         android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
