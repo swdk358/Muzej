@@ -26,7 +26,7 @@
         android:layout_toLeftOf="@+id/obrisi"
         android:background="@android:drawable/btn_default"
         android:src="@drawable/ic_edit"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         />
 
     <ImageButton
@@ -36,7 +36,7 @@
         android:layout_alignParentRight="true"
         android:background="@android:drawable/btn_default"
         android:src="@drawable/ic_delete"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         />
 
     <View
