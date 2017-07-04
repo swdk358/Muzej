@@ -1,5 +1,8 @@
 package rs.etf.nikola.muzej.utility;
 
+import android.support.annotation.NonNull;
+
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class Exhibit extends LinkedList<Showpiece> {
@@ -26,4 +29,12 @@ public class Exhibit extends LinkedList<Showpiece> {
         return null;
     }
 
+    public Exhibit(@NonNull Collection<? extends Showpiece> c, String name) {
+        super(c);
+        this.name = name;
+    }
+
+    public Exhibit() {
+
+    }
 }
