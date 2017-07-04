@@ -14,6 +14,8 @@ public class EditExhibitActivity extends CreateExhibitActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setTitle(R.string.activity_edit_exhibit_title);
+
         String exhibitName = getIntent().getExtras().getString("exhibitName");
 
         exhibit = Museum.getExhibitByName(exhibitName);

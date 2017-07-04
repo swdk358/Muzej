@@ -3,5 +3,6 @@
     <string name="activity_create_exhibit_title">Napravi izložbu</string>
     <string name="activity_create_showpiece_title">Napravi eksponat</string>
     <string name="activity_demo_exhibit_title">Demo izložbe</string>
+    <string name="activity_edit_exhibit_title">Uredi izložbu</string>
     <string name="invalid_name">Neispravno ime izložbe</string>
 </resources>
