@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/exportMuseum"
+        android:title="Izvezi Muzej"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Uvezi Muzej"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/importMuseumDisk"
+                android:title="iz skladišta podataka"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/importMuseumNet"
+                android:title="pomoću URL-a"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+</menu>

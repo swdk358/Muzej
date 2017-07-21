@@ -1,6 +1,5 @@
 package rs.etf.nikola.muzej;
 
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import rs.etf.nikola.muzej.utility.Showpiece;
-
 
 public class ShowpieceDialogFragment extends DialogFragment {
     private static final String ARG_PARAM1 = "showpiece";

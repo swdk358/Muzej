@@ -183,7 +183,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     private final FileChooserDialog.OnFileSelectedListener onImageSelectedListener = new FileChooserDialog.OnFileSelectedListener() {
         public void onFileSelected(Dialog source, File file) {
-            source.hide();
+            source.dismiss();
             String path = file.getAbsolutePath();
             showpiece.setImage(path);
             EditText et = (EditText) CreateShowpieceActivity.this.findViewById(R.id.uriImage);
@@ -196,7 +196,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     private final FileChooserDialog.OnFileSelectedListener onTextSelectedListener = new FileChooserDialog.OnFileSelectedListener() {
         public void onFileSelected(Dialog source, File file) {
-            source.hide();
+            source.dismiss();
             String path = file.getAbsolutePath();
             showpiece.setText(path);
             EditText et = (EditText) CreateShowpieceActivity.this.findViewById(R.id.uriText);
@@ -209,7 +209,7 @@ public class CreateShowpieceActivity extends AppCompatActivity implements Beacon
 
     private final FileChooserDialog.OnFileSelectedListener onSoundSelectedListener = new FileChooserDialog.OnFileSelectedListener() {
         public void onFileSelected(Dialog source, File file) {
-            source.hide();
+            source.dismiss();
             String path = file.getAbsolutePath();
             showpiece.setSound(path);
             EditText et = (EditText) CreateShowpieceActivity.this.findViewById(R.id.uriSound);
