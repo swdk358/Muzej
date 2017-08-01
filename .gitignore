@@ -7,11 +7,6 @@
 /build
 /captures
 .externalNativeBuild
-/gradle
 /.idea
 /app/src/main/res/raw
-build.gradle
-gradlew
-gradlew.bat
 gradle.properties
-settings.gradle
