@@ -7,8 +7,6 @@ import android.widget.Button;
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
-import rs.etf.nikola.muzej.R;
-
 public class MyCaptureActivity extends CaptureActivity {
     private DecoratedBarcodeView decoratedBarcodeView;
     private Button switchFlashlightButton;
