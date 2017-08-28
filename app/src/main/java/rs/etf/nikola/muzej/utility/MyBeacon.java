@@ -84,19 +84,14 @@ public class MyBeacon implements Comparable<MyBeacon> {
         if(this.txPower == txPower) {
             this.rssiList.remove();
             this.rssiList.add(rssiList.getLast());
-            double average = 0;
-            for(int i:this.rssiList)
-                average += i;
-            average /= this.rssiList.size();
-            this.distance = pow(10, (this.txPower - average) / (10 * 3));
         } else {
             this.txPower = txPower;
             this.rssiList = rssiList;
-            double average = 0;
-            for(int i:this.rssiList)
-                average += i;
-            average /= this.rssiList.size();
-            this.distance = pow(10, (this.txPower - average) / (10 * 3));
         }
+        double average = 0;
+        for(int i:this.rssiList)
+            average += i;
+        average /= this.rssiList.size();
+        this.distance = pow(10, (this.txPower - average) / (10 * 3));
     }
 }
